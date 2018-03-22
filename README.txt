@@ -1,46 +1,44 @@
-﻿Pre-requisitos:
-
-
-
-- Linux SO
-
-
-
-django-admin.py version
-
-- django versión 1.9.5
-
-
-
+﻿
 python -V
-- Python 2.7.6
+- Python 3.4 debido a que py-wsse tiene soporte hasta Python 3.4
 
+Instalar requirements
 
+pip install -r requirements.txt
 
-Librerias: Se incluyen en directorio libwebpay de este proyecto.
+Modificacion de librerias
 
-suds
+* En la librería suds ubicada en el virtualenv se realiza las siguiente modificacion
 
-wsse
+    - En el archivo client.py
 
+    modificar:
+    result = plugins.message.sending(envelope=soapenv)
+    if (result):
+        soapenv = result.envelope
+    request = Request(location, soapenv)
 
+* En la librería wsse ubicada en el virtualenv se realiza las siguiente modificacion
 
-Se deben mover a la carpeta de instalación de Python:
+    - En el archivo signing.py
 
-/usr/local/lib/python2.7/dist-packages/
+    comentar:
+    _sign_node(ctx, signature, security.find(ns(WSU_NS, 'Timestamp')))
 
+    - En el archivo suds.py
 
-
-En caso que la consola solicite instalación de librerias adicionales, esto se debe realizar.
-
+    comentar:
+    context.envelope = encrypt(context.envelope, self.their_certfile)
+    context.reply = decrypt(context.reply, self.keyfile)
 
 
 Datos de Prueba ambiente Integración.
 
+VISA CREDIT CARD (WILL BE APPROVED / SERÁ APROBADA)
+Number: 4051885600446623 CVV: 123 Year: any / cualquiera Month: any / cualquiera
 
+MASTERCARD CREDIT CARD (WILL BE DENIED / SERÁ DENEGADA)
+Number: 5186059559590568 CVV: 123 Year: any / cualquiera Month: any / cualquiera
 
-Tarjeta VISA
- 
-Nro 4051885600446623
- 
-CVV 123
+BANK VIEW
+RUT: 11.111.111-1 Password: 123
